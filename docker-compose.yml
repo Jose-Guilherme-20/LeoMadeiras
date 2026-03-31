@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: leomadeiras-sqlserver
+    environment:
+      SA_PASSWORD: "Senha@123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - leomadeiras-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Senha@123 -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: leomadeiras-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__Default: "Server=sqlserver,1433;Database=LeoMadeiras;User Id=sa;Password=Senha@123;TrustServerCertificate=True;MultipleActiveResultSets=True"
+      Jwt__Key: "chave-super-secreta-minimo-32-caracteres-aqui!"
+      Jwt__Issuer: "leomadeiras-api"
+      Jwt__Audience: "leomadeiras-client"
+      Jwt__ExpiresInHours: "8"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - leomadeiras-network
+    restart: on-failure
+
+volumes:
+  sqlserver_data:
+
+networks:
+  leomadeiras-network:
+    driver: bridge

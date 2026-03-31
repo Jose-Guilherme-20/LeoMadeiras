@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeoMadeiras.Infrastructure.Data
 {
-    public class AppDbContext : DbContext, IUnitOfWork
+    public class AppDbContext : DbContext
     {
         public DbSet<Produto> Produtos => Set<Produto>();
         public DbSet<Venda> Vendas => Set<Venda>();
@@ -16,7 +16,6 @@ namespace LeoMadeiras.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Aplica automaticamente todos os IEntityTypeConfiguration da Assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);

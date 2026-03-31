@@ -1,4 +1,13 @@
 
+using LeoMadeiras.Application.Contracts;
+using LeoMadeiras.Application.Contracts.Repositories;
+using LeoMadeiras.Infrastructure.Data;
+using LeoMadeiras.Infrastructure.Data.Interceptors;
+using LeoMadeiras.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace LeoMadeiras.Infrastructure.Extensions
 {
     public static class InfrastructureExtensions
@@ -6,13 +15,16 @@ namespace LeoMadeiras.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<AppDbContext>(opts =>
+            services.AddSingleton<AuditInterceptor>();
+
+            services.AddDbContext<AppDbContext>((sp, opts) =>
                 opts.UseSqlServer(config.GetConnectionString("Default"),
-                    sql => sql.EnableRetryOnFailure()));
+                        sql => sql.EnableRetryOnFailure())
+                    .AddInterceptors(sp.GetRequiredService<AuditInterceptor>()));
 
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
-            services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AppDbContext>());
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
