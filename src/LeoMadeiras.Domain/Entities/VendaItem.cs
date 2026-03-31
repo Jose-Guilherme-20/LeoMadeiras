@@ -5,11 +5,12 @@ namespace LeoMadeiras.Domain.Entities
 {
     public class VendaItem : BaseEntity
     {
-        public int Id { get; private set; }
         public int ProdutoId { get; private set; }
         public int Quantidade { get; private set; }
         public decimal ValorUnitario { get; private set; }
         public int VendaId { get; private set; }
+
+        public Produto? Produto { get; private set; }
 
         protected VendaItem() { }
 
@@ -20,3 +21,4 @@ namespace LeoMadeiras.Domain.Entities
             ValorUnitario = valorUnitario;
         }
     }
+}

@@ -24,3 +24,4 @@ namespace LeoMadeiras.Domain.Entities
             Total = _itens.Sum(i => i.ValorUnitario * i.Quantidade);
         }
     }
+}

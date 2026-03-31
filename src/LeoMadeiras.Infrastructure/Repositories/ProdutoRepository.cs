@@ -1,7 +1,11 @@
 
 using System;
 using LeoMadeiras.Application.Contracts.Repositories;
+using LeoMadeiras.Application.ViewModels.Common;
+using LeoMadeiras.Application.ViewModels.Produtos.Request;
+using LeoMadeiras.Application.ViewModels.Produtos.Response;
 using LeoMadeiras.Domain.Entities;
+using LeoMadeiras.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeoMadeiras.Infrastructure.Repositories
@@ -10,7 +14,8 @@ namespace LeoMadeiras.Infrastructure.Repositories
     {
         public ProdutoRepository(AppDbContext context) : base(context) { }
 
-        public async Task<PagedResult<Produto>> GetPagedAsync(ProdutoFiltroDto filtro, CancellationToken ct = default)
+        public async Task<PagedResultViewModel<Produto>> GetPagedAsync(
+            ProdutoFiltroRequest filtro, CancellationToken ct = default)
         {
             var query = DbSet.AsNoTracking().AsQueryable();
 
@@ -31,23 +36,33 @@ namespace LeoMadeiras.Infrastructure.Repositories
             };
 
             var total = await query.CountAsync(ct);
+
             var items = await query
                 .Skip((filtro.Page - 1) * filtro.PageSize)
                 .Take(filtro.PageSize)
                 .ToListAsync(ct);
 
-            return new PagedResult<Produto>(items, total, filtro.Page, filtro.PageSize);
+            return new PagedResultViewModel<Produto>
+            {
+                Items = items,
+                Total = total,
+                Page = filtro.Page,
+                PageSize = filtro.PageSize
+            };
         }
 
-        public async Task<IEnumerable<MaisVendidoDto>> GetMaisVendidosAsync(CancellationToken ct = default)
+        public async Task<IEnumerable<MaisVendidoResponse>> GetMaisVendidosAsync(CancellationToken ct = default)
             => await Context.VendaItens
-                .GroupBy(i => new { i.ProdutoId })
-                .Select(g => new MaisVendidoDto(
-                    g.Key.ProdutoId,
-                    g.First().Produto!.Nome,
-                    g.Sum(i => i.Quantidade)
-                ))
+                .AsNoTracking()
+                .GroupBy(i => new { i.ProdutoId, i.Produto!.Nome })
+                .Select(g => new MaisVendidoResponse
+                {
+                    ProdutoId = g.Key.ProdutoId,
+                    Nome = g.Key.Nome,
+                    TotalVendido = g.Sum(i => i.Quantidade)
+                })
                 .OrderByDescending(x => x.TotalVendido)
                 .ToListAsync(ct);
     }
 }
+

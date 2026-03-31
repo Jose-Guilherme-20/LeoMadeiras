@@ -1,5 +1,13 @@
 ﻿using System.Reflection;
 using System.Text;
+using LeoMadeiras.API.Middlewares;
+using LeoMadeiras.Application.UseCases.Produtos.AtualizarProduto;
+using LeoMadeiras.Application.UseCases.Produtos.BuscarProduto;
+using LeoMadeiras.Application.UseCases.Produtos.CriarProduto;
+using LeoMadeiras.Application.UseCases.Produtos.DeletarProduto;
+using LeoMadeiras.Application.UseCases.Produtos.ListarProdutos;
+using LeoMadeiras.Application.UseCases.Produtos.MaisVendidos;
+using LeoMadeiras.Application.UseCases.Vendas.RegistrarVenda;
 using LeoMadeiras.Infrastructure.Data;
 using LeoMadeiras.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -107,12 +115,15 @@ using (var scope = app.Services.CreateScope())
 }
 
 // ─── Pipeline ──────────────────────────────────────────────────────────────
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "LeoMadeiras API v1");
-    c.RoutePrefix = "swagger";
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "LeoMadeiras API v1");
+        c.RoutePrefix = "swagger";
+    });
+}
 
 app.UseSerilogRequestLogging();
 

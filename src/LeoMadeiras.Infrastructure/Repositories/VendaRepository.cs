@@ -2,6 +2,8 @@
 using System;
 using LeoMadeiras.Application.Contracts.Repositories;
 using LeoMadeiras.Domain.Entities;
+using LeoMadeiras.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeoMadeiras.Infrastructure.Repositories
 {

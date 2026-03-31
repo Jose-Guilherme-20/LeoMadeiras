@@ -2,6 +2,7 @@
 using System;
 using LeoMadeiras.Application.Contracts.Repositories;
 using LeoMadeiras.Domain.Common;
+using LeoMadeiras.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeoMadeiras.Infrastructure.Repositories
@@ -39,3 +40,4 @@ namespace LeoMadeiras.Infrastructure.Repositories
             return Task.CompletedTask;
         }
     }
+}

@@ -1,5 +1,6 @@
 
 using LeoMadeiras.Domain.Common;
+using LeoMadeiras.Domain.Exceptions;
 
 namespace LeoMadeiras.Domain.Entities
 {
