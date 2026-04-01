@@ -14,9 +14,9 @@ namespace LeoMadeiras.Domain.Entities
 
         protected VendaItem() { }
 
-        public VendaItem(int produtoId, int quantidade, decimal valorUnitario)
+        public VendaItem(Produto produto, int quantidade, decimal valorUnitario)
         {
-            ProdutoId = produtoId;
+            Produto = produto;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
         }

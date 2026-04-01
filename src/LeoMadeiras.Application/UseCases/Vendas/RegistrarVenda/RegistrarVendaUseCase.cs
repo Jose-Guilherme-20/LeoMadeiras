@@ -39,7 +39,7 @@ namespace LeoMadeiras.Application.UseCases.Vendas.RegistrarVenda
                 produto.DebitarEstoque(itemRequest.Quantidade);
                 await _produtoRepo.UpdateAsync(produto, ct);
 
-                itens.Add(new VendaItem(produto.Id, itemRequest.Quantidade, itemRequest.ValorUnitario));
+                itens.Add(new VendaItem(produto, itemRequest.Quantidade, itemRequest.ValorUnitario));
             }
 
             var venda = new Venda(request.Order, request.Status, itens);
