@@ -9,6 +9,7 @@ namespace LeoMadeiras.Infrastructure.Data
         public DbSet<Produto> Produtos => Set<Produto>();
         public DbSet<Venda> Vendas => Set<Venda>();
         public DbSet<VendaItem> VendaItens => Set<VendaItem>();
+        public DbSet<Usuario> Usuarios => Set<Usuario>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

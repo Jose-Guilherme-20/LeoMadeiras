@@ -1,6 +1,7 @@
 
 using LeoMadeiras.Application.Contracts;
 using LeoMadeiras.Application.Contracts.Repositories;
+using LeoMadeiras.Application.Contracts.Services;
 using LeoMadeiras.Infrastructure.Data;
 using LeoMadeiras.Infrastructure.Data.Interceptors;
 using LeoMadeiras.Infrastructure.Repositories;
@@ -25,6 +26,8 @@ namespace LeoMadeiras.Infrastructure.Extensions
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>(); 
+            services.AddScoped<IJwtService, JwtService>();               
 
             return services;
         }

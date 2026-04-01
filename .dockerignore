@@ -5,6 +5,5 @@
 **/obj
 **/node_modules
 **/*.user
-**/tests
 README.md
 docker-compose*.yml

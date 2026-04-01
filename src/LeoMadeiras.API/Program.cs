@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text;
 using LeoMadeiras.API.Middlewares;
+using LeoMadeiras.Application.UseCases.Auth.Login;
+using LeoMadeiras.Application.UseCases.Auth.RegistrarUsuario;
 using LeoMadeiras.Application.UseCases.Produtos.AtualizarProduto;
 using LeoMadeiras.Application.UseCases.Produtos.BuscarProduto;
 using LeoMadeiras.Application.UseCases.Produtos.CriarProduto;
@@ -104,6 +106,8 @@ builder.Services.AddScoped<IAtualizarProdutoUseCase, AtualizarProdutoUseCase>();
 builder.Services.AddScoped<IDeletarProdutoUseCase, DeletarProdutoUseCase>();
 builder.Services.AddScoped<IMaisVendidosUseCase, MaisVendidosUseCase>();
 builder.Services.AddScoped<IRegistrarVendaUseCase, RegistrarVendaUseCase>();
+builder.Services.AddScoped<IRegistrarUsuarioUseCase, RegistrarUsuarioUseCase>();
+builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 // ─── Build ─────────────────────────────────────────────────────────────────
 var app = builder.Build();
 
